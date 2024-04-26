@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
+}
+
+.calculator {
+  width: 500px;
+  height: 500px;
+  background-color: red;
+}
