@@ -1,11 +1,11 @@
 // Get references to elements
-const output = document.getElementById("output-value");
-const history = document.getElementById("history-value");
-const numbers = document.querySelectorAll(".number");
-const operators = document.querySelectorAll(".operator");
+let output = document.getElementById("output-value");
+let numbers = document.querySelectorAll(".number");
+let operators = document.querySelectorAll(".operator");
 
 let currentInput = "";
-let historyValue = "";
+
+console.log(numbers);
 
 // Add event listeners to number buttons
 numbers.forEach((number) => {
@@ -21,7 +21,6 @@ operators.forEach((operator) => {
     if (currentInput !== "") {
       if (operator.id !== "equals" && operator.id !== "backspace") {
         currentInput += " " + operator.id + " ";
-        historyValue += currentInput;
         updateOutput();
       }
     }
@@ -51,7 +50,6 @@ function updateOutput() {
 // Function to clear the calculator
 function clear() {
   currentInput = "";
-  historyValue = "";
   updateOutput();
   history.textContent = "";
 }
@@ -63,12 +61,10 @@ function backspace() {
   }
 }
 
-
 function calculate() {
   if (currentInput !== "") {
     const result = eval(currentInput);
     output.textContent = result;
-   // history.textContent = historyValue;
     currentInput = result;
   }
 }
