@@ -1,70 +1,77 @@
-// Get references to elements
-let output = document.getElementById("output-value");
-let numbers = document.querySelectorAll(".number");
-let operators = document.querySelectorAll(".operator");
+const outPut = document.getElementById("output-value");
+const history = document.getElementById("history-value");
+const operators = document.getElementsByClassName("operator"); //Html collection
+const numbers = document.getElementsByClassName("number");
 
-let currentInput = "";
+//we cant use for each on HTML collection so we have to convert it to array first
 
-console.log(numbers);
+let currentValue = "";
+let historyValue = " ";
 
-// Add event listeners to number buttons
-numbers.forEach((number) => {
-  number.addEventListener("click", () => {
-    currentInput += number.id;
-    updateOutput();
-  });
-});
-
-// Add event listeners to operator buttons
-operators.forEach((operator) => {
-  operator.addEventListener("click", () => {
-    if (currentInput !== "") {
-      if (operator.id !== "equals" && operator.id !== "backspace") {
-        currentInput += " " + operator.id + " ";
-        updateOutput();
-      }
-    }
-  });
-});
-
-// Event listener for clear button
-document.getElementById("clear").addEventListener("click", () => {
-  clear();
-});
-
-// Event listener for backspace button
-document.getElementById("backspace").addEventListener("click", () => {
-  backspace();
-});
-
-// Event listener for equals button
-document.getElementById("equals").addEventListener("click", () => {
-  calculate();
-});
-
-// Function to update output display
 function updateOutput() {
-  output.textContent = currentInput;
+  outPut.textContent = currentValue;
 }
 
-// Function to clear the calculator
-function clear() {
-  currentInput = "";
-  updateOutput();
-  history.textContent = "";
+function clearDisplay() {
+  currentValue = "";
+  historyValue = "";
 }
 
 function backspace() {
-  if (currentInput.length > 0) {
-    currentInput = currentInput.slice(0, -1);
-    updateOutput();
+  currentValue = currentValue.substring(0, currentValue.length - 1);
+}
+
+function evaluate() {
+  currentValue = currentValue.toString().replace("x", "*");
+  if (currentValue === "Error") {
+    return "Error";
+  }
+
+  try {
+    currentValue = eval(currentValue);
+  } catch (error) {
+    currentValue = "Error";
   }
 }
 
-function calculate() {
-  if (currentInput !== "") {
-    const result = eval(currentInput);
-    output.textContent = result;
-    currentInput = result;
-  }
-}
+Array.from(operators).forEach((operators) => {
+  operators.addEventListener("click", () => {
+    switch (operators.id) {
+      case "clear":
+        clearDisplay();
+        break;
+      case "negetive":
+        console.log("negetive");
+        break;
+      case "%":
+        currentValue += "%";
+        break;
+      case "/":
+        currentValue += "/";
+        break;
+      case "*":
+        currentValue += "x";
+        break;
+      case "-":
+        currentValue += "-";
+        break;
+      case "+":
+        currentValue += "+";
+        break;
+      case "backspace":
+        backspace();
+        break;
+      case "equals":
+        evaluate();
+        break;
+    }
+    updateOutput();
+  });
+});
+
+Array.from(numbers).forEach((numbers) => {
+  numbers.addEventListener("click", () => {
+    currentValue += numbers.id;
+    updateOutput();
+  });
+});
